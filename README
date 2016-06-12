@@ -4,6 +4,8 @@ Original Fork: https://github.com/cweiske/xmpphp
 Modifications:
 
 * Adding Option to allow TLS Connections with selfsigned Certificates (>PHP 5.6)
+   > $conn->setSSLOptions([ 'allow_self_signed' => true, 'verify_peer_name' => false ]);
+   
 * Fixing of some Exception Handling issues and other Bugs
 
 
