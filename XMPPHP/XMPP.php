@@ -161,7 +161,16 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream {
 	public function useEncryption($useEncryption = true) {
 		$this->use_encryption = $useEncryption;
 	}
-	
+
+
+	/**
+	 * Set SSL Options
+	 */
+	public function setSSLOptions($opts = False) {
+		$this->ssl_options = $opts;
+	}
+
+
 	/**
 	 * Turn on auto-authorization of subscription requests.
 	 *
