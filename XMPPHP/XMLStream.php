@@ -163,6 +163,13 @@ class XMPPHP_XMLStream {
 	 * @var boolean
 	 */
 	protected $use_ssl = false;
+
+	/**
+	 * @var object
+	 */
+	protected $ssl_options = [ 'allow_self_signed' => false, 'verify_peer_name' => true ];
+
+
 	/**
 	 * @var integer
 	 */
@@ -309,9 +316,14 @@ class XMPPHP_XMLStream {
 			}
 			$conntype = 'tcp';
 			if($this->use_ssl) $conntype = 'ssl';
+
+			$options['ssl'] = $this->ssl_options;
+			$context = stream_context_create($options);
+
+
 			$this->log->log("Connecting to $conntype://{$this->host}:{$this->port}");
 			try {
-				$this->socket = @stream_socket_client("$conntype://{$this->host}:{$this->port}", $errno, $errstr, $timeout, $conflag);
+				$this->socket = @stream_socket_client("$conntype://{$this->host}:{$this->port}", $errno, $errstr, $timeout, $conflag, $context);
 			} catch (Exception $e) {
 				throw new XMPPHP_Exception($e->getMessage());
 			}
@@ -339,7 +351,7 @@ class XMPPHP_XMLStream {
 	 * @see    setReconnectTimeout()
 	 */
 	public function doReconnect() {
-		if(!$this->is_server) {
+		if(!$this->is_server && $this->reconnect) {
 			$this->log->log("Reconnecting ($this->reconnectTimeout)...",  XMPPHP_Log::LEVEL_WARNING);
 			$this->connect($this->reconnectTimeout, false, false);
 			$this->reset();
