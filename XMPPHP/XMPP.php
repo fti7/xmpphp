@@ -532,7 +532,17 @@ class XMPPHP_XMPP extends XMPPHP_XMLStream {
 	protected function tls_proceed_handler($xml) {
 		$this->log->log("Starting TLS encryption");
 
-		if(!stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+
+		// Fix https://bugs.php.net/bug.php?id=69195
+		$crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+
+		if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
+ 			$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+			$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
+		}
+
+
+		if(!stream_socket_enable_crypto($this->socket, true, $crypto_method)) {
 			// Hard Close Socket; Data Trash
 			fclose($this->socket);
 			$this->socket = NULL;
