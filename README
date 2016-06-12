@@ -1,3 +1,12 @@
+Fork
+================================================================================
+Original Fork: https://github.com/cweiske/xmpphp
+Modifications:
+
+* Adding Option to allow TLS Connections with selfsigned Certificates (>PHP 5.6)
+* Fixing of some Exception Handling issues and other Bugs
+
+
 About
 ================================================================================
 XMPPHP is an elegant PHP library for XMPP (aka Jabber, Google Talk, etc).
