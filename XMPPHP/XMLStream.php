@@ -410,6 +410,12 @@ class XMPPHP_XMLStream {
 			return true;
 		}
 
+		// Quick & Dirty FIX </stream:stream>
+		if ($start == '/stream:stream') {
+			$this->event('end_stream');
+			return true;
+		}
+
 		return false;
 	}
 
